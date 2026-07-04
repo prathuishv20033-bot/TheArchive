@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archive - Classics</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent scrolling for the full page animation */
+        }
+
+        .classics-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Animated Background Elements */
+        .bg-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(27,42,71,0.4) 0%, rgba(27,42,71,0) 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulseGlow 4s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+        }
+
+        /* Floating Book Icon */
+        .classics-icon {
+            font-size: 5rem;
+            color: var(--brand-blue);
+            margin-bottom: 2rem;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 10px 15px rgba(27,42,71, 0.3));
+            z-index: 10;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(3deg); }
+            66% { transform: translateY(-5px) rotate(-3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* Animated Title */
+        .coming-soon-title {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            color: var(--text-primary);
+            text-align: center;
+            margin: 0;
+            background: linear-gradient(135deg, #1b2a47 0%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            animation-delay: 0.3s;
+            z-index: 10;
+        }
+
+        /* Subtitle */
+        .coming-soon-subtitle {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            text-align: center;
+            max-width: 80%;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            animation-delay: 0.6s;
+            z-index: 10;
+        }
+
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            background: var(--brand-blue);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 8s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100px) scale(0); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-200px) scale(1); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <button class="icon-btn" aria-label="Menu" id="menuBtn"><i class="ph ph-list"></i></button>
+        <img src="logo.png" alt="The Archive" class="logo-img" onerror="this.outerHTML='<h1 class=\'logo-title\'>The Archive</h1>'">
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="icon-btn" aria-label="Toggle Theme" id="themeBtn"><i class="ph ph-moon"></i></button>
+            <button class="icon-btn" aria-label="Search" id="searchBtn"><i class="ph ph-magnifying-glass"></i></button>
+        </div>
+    </header>
+
+    <!-- Main Content for Classics -->
+    <main class="classics-container">
+        <div class="bg-glow"></div>
+        <div id="particles"></div>
+        
+        <i class="ph-fill ph-books classics-icon"></i>
+        <h2 class="coming-soon-title">The Archive Classics</h2>
+        <p class="coming-soon-subtitle">Discover our premium collection of books published exclusively by us. A timeless reading experience is coming soon.</p>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item" title="Home"><i class="ph ph-house"></i></a>
+        <a href="classics.html" class="nav-item active" title="Classics"><i class="ph ph-books"></i></a>
+        <a href="news.html" class="nav-item" title="Read News"><i class="ph ph-newspaper"></i></a>
+        <a href="#" class="nav-item"><i class="ph ph-user"></i></a>
+    </nav>
+
+    <script>
+        // Theme initialization
+        const savedTheme = localStorage.getItem('theme');
+        if(savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+
+        // Generate beautiful floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random properties
+            const size = Math.random() * 6 + 2 + 'px';
+            const left = Math.random() * 100 + 'vw';
+            const delay = Math.random() * 5 + 's';
+            const duration = Math.random() * 5 + 5 + 's';
+            
+            particle.style.width = size;
+            particle.style.height = size;
+            particle.style.left = left;
+            particle.style.top = '70%'; // start near bottom
+            particle.style.animationDelay = delay;
+            particle.style.animationDuration = duration;
+            
+            particlesContainer.appendChild(particle);
+        }
+
+        // Theme Toggle Logic for Classics page
+        const themeBtn = document.getElementById('themeBtn');
+        const themeIcon = themeBtn ? themeBtn.querySelector('i') : null;
+        if(savedTheme === 'dark' && themeIcon) themeIcon.className = 'ph ph-sun';
+
+        if(themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                if(isDark) {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.className = 'ph ph-moon';
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.className = 'ph ph-sun';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

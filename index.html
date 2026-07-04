@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Archive - Daily News</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons (Phosphor Icons - clean and matches the design well) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- PapaParse for CSV fetching -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <button class="icon-btn" aria-label="Menu" id="menuBtn"><i class="ph ph-list"></i></button>
+        <img src="logo.png" alt="The Archive" class="logo-img" onerror="this.outerHTML='<h1 class=\'logo-title\'>The Archive</h1>'">
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="icon-btn" aria-label="Toggle Theme" id="themeBtn"><i class="ph ph-moon"></i></button>
+            <button class="icon-btn" aria-label="Search" id="searchBtn"><i class="ph ph-magnifying-glass"></i></button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            <button class="close-btn" id="closeSidebarBtn"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="sidebar-links">
+            <a href="index.html" class="sidebar-link active"><i class="ph ph-house"></i> Home</a>
+            <a href="classics.html" class="sidebar-link"><i class="ph ph-books"></i> Classics</a>
+            <a href="#" class="sidebar-link"><i class="ph ph-bookmark-simple"></i> Saved</a>
+            <a href="#" class="sidebar-link"><i class="ph ph-gear"></i> Settings</a>
+        </div>
+    </aside>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-header">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search by date or name..." autocomplete="off">
+                <button class="close-btn" id="closeSearchBtn"><i class="ph ph-x"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <!-- Grid Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><span class="accent-bar"></span>READ MORE</h2>
+                <a href="#" class="show-more">Show more</a>
+            </div>
+            
+            <div class="archives-grid" id="archives-grid">
+                <!-- Content injected via JS -->
+                <div style="text-align:center; width:100%; padding:2rem; color:var(--text-secondary);">Loading papers...</div>
+            </div>
+
+            <button class="no-results-btn">No more results</button>
+        </section>
+
+        <!-- Recommendation Section -->
+        <section class="premium-form-section">
+            <div class="premium-form-card">
+                <div class="form-header">
+                    <div class="icon-wrapper">
+                        <i class="ph-fill ph-star"></i>
+                    </div>
+                    <h2>Curate The Archive</h2>
+                    <p>Suggest legendary classics and historical papers we should publish next.</p>
+                </div>
+                
+                <div class="form-content">
+                    <form class="premium-form" id="recommendation-form" action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSeZ6-tDXW2TTRdAbnmncmruM-QsQjtEVxEGvR_T32nyeNLMBQ/formResponse" method="POST" target="hidden_iframe" onsubmit="window.formSubmitted=true; document.getElementById('recommendation-form').classList.add('submitting');">
+                        <div class="input-group">
+                            <input type="text" name="entry.801920498" required class="premium-input" id="name-input">
+                            <label for="name-input">Your Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="email" name="entry.2095260524" required class="premium-input" id="email-input">
+                            <label for="email-input">Your Email</label>
+                        </div>
+                        <div class="input-group">
+                            <textarea name="entry.1463966505" required class="premium-input" id="message-input" rows="3"></textarea>
+                            <label for="message-input">Your Recommendation</label>
+                        </div>
+                        <button type="submit" class="premium-submit-btn">
+                            <span>Submit Recommendation</span>
+                            <i class="ph ph-arrow-right"></i>
+                        </button>
+                    </form>
+                    
+                    <div class="success-message" id="success-message">
+                        <i class="ph-fill ph-check-circle"></i>
+                        <h3>Thank You</h3>
+                        <p>Your recommendation has been securely added to our curating vault.</p>
+                    </div>
+                </div>
+                
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(window.formSubmitted) { document.getElementById('recommendation-form').style.display='none'; document.getElementById('success-message').classList.add('show'); }"></iframe>
+            </div>
+        </section>
+    </main>
+
+    <!-- Papers List Modal -->
+    <div class="modal-overlay" id="papers-modal">
+        <div class="modal-content" style="max-height: 80vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 id="papers-modal-title">Papers</h3>
+                <button class="close-modal" id="close-papers-modal"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="archives-list" id="papers-modal-list">
+                <!-- Links injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookie-banner">
+        <div class="cookie-content">
+            <p>Our website uses cookies to enhance your experience.<br><a href="#" class="check-now">Check Now <i class="ph ph-arrow-up-right"></i></a></p>
+        </div>
+        <button class="btn-primary" id="accept-cookies">Ok, Go it!</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active" title="Home"><i class="ph ph-house"></i></a>
+        <a href="classics.html" class="nav-item" title="Classics"><i class="ph ph-books"></i></a>
+        <a href="news.html" class="nav-item" title="Read News"><i class="ph ph-newspaper"></i></a>
+        <a href="#" class="nav-item"><i class="ph ph-user"></i></a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

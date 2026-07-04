@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Headlines - The Archive</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Same Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Small styling tweak for news cards to look distinct from archives */
+        .news-card-title {
+            font-size: 1.05rem !important;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-align: left;
+        }
+        .news-card-source {
+            justify-content: flex-start !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <button class="icon-btn" aria-label="Menu" id="menuBtn"><i class="ph ph-list"></i></button>
+        <img src="logo.png" alt="The Archive" class="logo-img" onerror="this.outerHTML='<h1 class=\'logo-title\'>The Archive</h1>'">
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="icon-btn" aria-label="Toggle Theme" id="themeBtn"><i class="ph ph-moon"></i></button>
+            <button class="icon-btn" aria-label="Search" id="searchBtn"><i class="ph ph-magnifying-glass"></i></button>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>The Archive</h2>
+            <button class="close-btn" id="closeSidebarBtn"><i class="ph ph-x"></i></button>
+        </div>
+        <div class="sidebar-links">
+            <a href="index.html" class="sidebar-link"><i class="ph ph-house"></i> Dashboard</a>
+            <a href="classics.html" class="sidebar-link"><i class="ph ph-books"></i> Classics</a>
+            <a href="news.html" class="sidebar-link active"><i class="ph ph-newspaper"></i> Read News</a>
+            <a href="#" class="sidebar-link"><i class="ph ph-bookmark"></i> Bookmarks</a>
+            <a href="#" class="sidebar-link"><i class="ph ph-gear"></i> Settings</a>
+        </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-header">
+                <i class="ph ph-magnifying-glass search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Search headlines..." autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="section-header" style="margin-top: 1rem;">
+            <h2 class="section-title"><span class="accent-bar"></span> Global Headlines</h2>
+        </div>
+        
+        <!-- Loading State -->
+        <div id="news-loading" style="text-align: center; padding: 4rem; color: var(--brand-blue);">
+            <i class="ph ph-spinner ph-spin" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <p style="font-family: var(--font-sans); color: var(--text-secondary);">Fetching latest news...</p>
+        </div>
+
+        <div class="archives-grid" id="news-grid">
+            <!-- News cards inserted here -->
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item" title="Home"><i class="ph ph-house"></i></a>
+        <a href="classics.html" class="nav-item" title="Classics"><i class="ph ph-books"></i></a>
+        <a href="news.html" class="nav-item active" title="Read News"><i class="ph ph-newspaper"></i></a>
+        <a href="#" class="nav-item"><i class="ph ph-user"></i></a>
+    </nav>
+
+    <script src="script.js"></script>
+    <script src="news.js"></script>
+</body>
+</html>
