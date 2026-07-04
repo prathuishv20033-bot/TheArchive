@@ -596,3 +596,29 @@ textarea.premium-input + label { top: 1.2rem; transform: translateY(0); }
 .success-message i { font-size: 4rem; color: #10b981; margin-bottom: 1rem; filter: drop-shadow(0 10px 15px rgba(16, 185, 129, 0.3)); }
 .success-message h3 { font-family: var(--font-serif); font-size: 2rem; color: var(--brand-blue); margin-bottom: 0.5rem; }
 .success-message p { color: var(--text-secondary); line-height: 1.6; }
+
+/* Premium Loader */
+.premium-loader {
+    width: 60px; height: 60px; border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--brand-blue);
+    border-bottom-color: var(--brand-blue);
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    position: relative; margin: 0 auto;
+}
+.premium-loader::before {
+    content: ''; position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border-radius: 50%; border: 3px solid transparent;
+    border-left-color: var(--text-secondary);
+    border-right-color: var(--text-secondary);
+    animation: spin 2s linear infinite reverse;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes text-pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}

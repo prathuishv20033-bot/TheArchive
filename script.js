@@ -179,7 +179,7 @@ window.openDateModal = function(dateStr) {
     const papers = archivesData.filter(item => (item.Date || item.date) === dateStr);
     
     papers.forEach((item, index) => {
-        const btnClass = index % 2 === 0 ? 'btn-primary' : 'btn-outline';
+        const btnClass = 'btn-primary';
         const name = item.Name || item.name || 'Unknown Paper';
         const region = item.Region || item.region || '';
         const url = item.URL || item.url || '#';
