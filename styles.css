@@ -413,37 +413,6 @@ main {
     margin-top: 1rem;
 }
 
-/* Cookie Banner */
-.cookie-banner {
-    position: fixed;
-    bottom: 60px; /* Above nav */
-    left: 0;
-    width: 100%;
-    background: white;
-    border-top: 1px solid var(--border-color);
-    padding: 1rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    z-index: 90;
-    transition: transform 0.3s ease-in-out;
-}
-
-.cookie-banner.hidden {
-    transform: translateY(150%);
-}
-
-.cookie-content p {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-}
-
-.check-now {
-    color: var(--brand-blue);
-    text-decoration: underline;
-    font-weight: 500;
-}
-
 /* Bottom Navigation */
 .bottom-nav {
     position: fixed;

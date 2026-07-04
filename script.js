@@ -45,7 +45,13 @@ function renderArchives() {
         window.groupedData = groupedData;
         renderDashboard('');
     } else {
-        gridContainer.innerHTML = '<div style="text-align:center; width:100%; padding:2rem; color:var(--text-secondary);">No papers found. Ensure the Google Sheet is published to the web.</div>';
+        gridContainer.innerHTML = `
+            <div style="grid-column: 1/-1; text-align:center; padding: 4rem 2rem;">
+                <i class="ph-fill ph-clock-counter-clockwise" style="font-size: 4rem; color: var(--brand-blue); margin-bottom: 1rem; filter: drop-shadow(0 10px 15px rgba(32,53,86,0.2));"></i>
+                <h3 style="font-family: var(--font-serif); font-size: 2rem; color: var(--text-primary); margin-bottom: 0.5rem;">Archives Coming Soon</h3>
+                <p style="color: var(--text-secondary); font-size: 1.1rem;">We are currently digitizing and curating this collection. Please check back later!</p>
+            </div>
+        `;
     }
 }
 
@@ -212,7 +218,13 @@ function fetchData() {
         },
         error: function(error) {
             console.error("Error fetching CSV:", error);
-            document.getElementById('archives-grid').innerHTML = '<div style="text-align:center; width:100%; padding:2rem; color:red;">Failed to load data. The Google Sheet must be published to the web (File > Share > Publish to web > CSV).</div>';
+            document.getElementById('archives-grid').innerHTML = `
+                <div style="grid-column: 1/-1; text-align:center; padding: 4rem 2rem;">
+                    <i class="ph-fill ph-clock-counter-clockwise" style="font-size: 4rem; color: var(--brand-blue); margin-bottom: 1rem; filter: drop-shadow(0 10px 15px rgba(32,53,86,0.2));"></i>
+                    <h3 style="font-family: var(--font-serif); font-size: 2rem; color: var(--text-primary); margin-bottom: 0.5rem;">Archives Coming Soon</h3>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem;">We are currently digitizing and curating this collection. Please check back later!</p>
+                </div>
+            `;
         }
     });
 }
@@ -222,19 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch Data
     fetchData();
     
-    // Cookie Banner Logic
-    const cookieBanner = document.getElementById('cookie-banner');
-    const acceptCookiesBtn = document.getElementById('accept-cookies');
-    
-    if (localStorage.getItem('cookiesAccepted')) {
-        cookieBanner.classList.add('hidden');
-    }
-    
-    acceptCookiesBtn.addEventListener('click', () => {
-        cookieBanner.classList.add('hidden');
-        localStorage.setItem('cookiesAccepted', 'true');
-    });
-    
+
     // Papers modal logic
     const papersModal = document.getElementById('papers-modal');
     const closePapersModal = document.getElementById('close-papers-modal');
