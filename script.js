@@ -45,14 +45,15 @@ function renderArchives() {
     gridContainer.innerHTML = '';
     
     // Sort data by date descending
-    archivesData.sort((a, b) => parseDate(b.Date) - parseDate(a.Date));
+    archivesData.sort((a, b) => parseDate(b.Date || b.date) - parseDate(a.Date || a.date));
     
     if (archivesData.length > 0) {
-        // Group by date
+        // Group by normalized date
         const groupedData = {};
         archivesData.forEach(item => {
-            const dateKey = item.Date || item.date;
-            if (!dateKey) return;
+            const rawDate = item.Date || item.date;
+            if (!rawDate) return;
+            const dateKey = formatFullDate(rawDate);
             if (!groupedData[dateKey]) {
                 groupedData[dateKey] = [];
             }
@@ -86,7 +87,7 @@ function renderDashboard(query = '') {
     
     sortedDates.forEach((date) => {
         const papers = window.groupedData[date];
-        const matchesDate = date.toLowerCase().includes(q) || formatFullDate(date).toLowerCase().includes(q) || formatReadableDate(date).toLowerCase().includes(q);
+        const matchesDate = date.toLowerCase().includes(q) || formatReadableDate(date).toLowerCase().includes(q);
         const matchesPapers = papers.some(p => {
             const name = p.Name || p.name || '';
             const region = p.Region || p.region || '';
@@ -98,12 +99,15 @@ function renderDashboard(query = '') {
             const delay = cardIndex * 0.1;
             cardIndex++;
             
+            const paperNames = [...new Set(papers.map(p => p.Name || p.name || 'Unknown Paper'))].join(', ');
+            
             const cardHTML = `
                 <div class="grid-card" onclick="openDateModal('${date}')" style="animation-delay: ${delay}s">
                     <img src="${FALLBACK_IMAGE}" alt="ePaper">
                     <div class="grid-content">
-                        <h3>DATE - ${formatFullDate(date)}</h3>
-                        <p><i class="ph ph-user-circle"></i> <span class="user-brand">The Archive</span> - ${formatReadableDate(date)}</p>
+                        <h3>DATE - ${date}</h3>
+                        <p style="margin-bottom: 5px;"><i class="ph ph-newspaper"></i> <span class="user-brand">${paperNames}</span></p>
+                        <p style="font-size: 0.85em; opacity: 0.8;"><i class="ph ph-calendar"></i> ${formatReadableDate(date)}</p>
                     </div>
                 </div>
             `;
@@ -194,7 +198,7 @@ window.openDateModal = function(dateStr) {
     modalTitle.textContent = `Papers for ${formatReadableDate(dateStr)}`;
     modalList.innerHTML = '';
     
-    const papers = archivesData.filter(item => (item.Date || item.date) === dateStr);
+    const papers = window.groupedData[dateStr] || [];
     
     papers.forEach((item, index) => {
         const btnClass = 'btn-primary';
