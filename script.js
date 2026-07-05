@@ -2,9 +2,24 @@ let archivesData = [];
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgJKYgoLswW4eQnqlJHHmuzXdFMILNLHFDzGsOWsOpG0ynJ7xKlpc8hdgU4IjZ-1o7jcQsdXpTyiUY/pub?output=csv";
 const FALLBACK_IMAGE = "newspaper_delivery_blue.png";
 
+// Parse DD/MM/YYYY date strings from Google Sheets / Excel
+function parseDate(dateStr) {
+    if (!dateStr) return new Date(NaN);
+    if (typeof dateStr === 'string' && dateStr.includes('/')) {
+        const parts = dateStr.split('/');
+        if (parts.length === 3) {
+            const day = parts[0].padStart(2, '0');
+            const month = parts[1].padStart(2, '0');
+            const year = parts[2].substring(0, 4);
+            return new Date(`${year}-${month}-${day}T00:00:00`);
+        }
+    }
+    return new Date(dateStr);
+}
+
 // Format date to "04/07/2026" (DD/MM/YYYY)
 function formatFullDate(dateStr) {
-    const date = new Date(dateStr);
+    const date = parseDate(dateStr);
     if(isNaN(date)) return dateStr;
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -14,7 +29,7 @@ function formatFullDate(dateStr) {
 
 // Format readable date "July 03, 2026"
 function formatReadableDate(dateStr) {
-    const date = new Date(dateStr);
+    const date = parseDate(dateStr);
     if(isNaN(date)) return dateStr;
     return date.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
 }
@@ -27,7 +42,7 @@ function renderArchives() {
     gridContainer.innerHTML = '';
     
     // Sort data by date descending
-    archivesData.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    archivesData.sort((a, b) => parseDate(b.Date) - parseDate(a.Date));
     
     if (archivesData.length > 0) {
         // Group by date
@@ -61,7 +76,7 @@ function renderDashboard(query = '') {
     
     grid.innerHTML = '';
     const q = query.toLowerCase();
-    const sortedDates = Object.keys(window.groupedData).sort((a, b) => new Date(b) - new Date(a));
+    const sortedDates = Object.keys(window.groupedData).sort((a, b) => parseDate(b) - parseDate(a));
     
     let hasResults = false;
     let cardIndex = 0;
