@@ -2,16 +2,19 @@ let archivesData = [];
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTgJKYgoLswW4eQnqlJHHmuzXdFMILNLHFDzGsOWsOpG0ynJ7xKlpc8hdgU4IjZ-1o7jcQsdXpTyiUY/pub?output=csv";
 const FALLBACK_IMAGE = "newspaper_delivery_blue.png";
 
-// Parse DD/MM/YYYY date strings from Google Sheets / Excel
+// Parse DD/MM/YYYY or DD-MM-YYYY date strings from Google Sheets / Excel
 function parseDate(dateStr) {
     if (!dateStr) return new Date(NaN);
-    if (typeof dateStr === 'string' && dateStr.includes('/')) {
-        const parts = dateStr.split('/');
-        if (parts.length === 3) {
-            const day = parts[0].padStart(2, '0');
-            const month = parts[1].padStart(2, '0');
-            const year = parts[2].substring(0, 4);
-            return new Date(`${year}-${month}-${day}T00:00:00`);
+    if (typeof dateStr === 'string') {
+        const separator = dateStr.includes('/') ? '/' : dateStr.includes('-') ? '-' : null;
+        if (separator) {
+            const parts = dateStr.split(separator);
+            if (parts.length === 3) {
+                const day = parts[0].padStart(2, '0');
+                const month = parts[1].padStart(2, '0');
+                const year = parts[2].substring(0, 4);
+                return new Date(`${year}-${month}-${day}T00:00:00`);
+            }
         }
     }
     return new Date(dateStr);
